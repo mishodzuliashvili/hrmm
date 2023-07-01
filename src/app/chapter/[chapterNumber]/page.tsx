@@ -27,9 +27,9 @@ export default function Chapter({
           N{chapter.chapterNumber + " " + chapter.name}
         </h1>
         <div className="flex gap-4 items-center">
-          <div className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300">
+          {/* <div className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300">
             Score: {score}
-          </div>
+          </div> */}
           <Link
             href="/"
             className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
