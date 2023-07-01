@@ -27,12 +27,12 @@ export const MultipleChoiseQuestion = ({
       </div>
       <div className="flex flex-col items-start">
         {selectedOption === question.answer && (
-          <div className="border border-green-500 text-green-500 p-3 rounded-lg text-white">
+          <div className="border border-green-500 text-green-500 p-3 rounded-lg ">
             <span>{selectedOption} is Correct</span>
           </div>
         )}
         {selectedOption !== question.answer && selectedOption !== undefined && (
-          <div className="border border-red-500 text-red-500 p-3 rounded-lg text-white">
+          <div className="border border-red-500 text-red-500 p-3 rounded-lg ">
             <span>{selectedOption} is Incorrect</span>
           </div>
         )}

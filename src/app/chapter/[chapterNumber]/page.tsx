@@ -1,5 +1,6 @@
 "use client";
 import { CHAPTERS } from "@/assets/data";
+import Button from "@/components/Button";
 import { Question } from "@/components/Question";
 import Link from "next/link";
 import { useState } from "react";
@@ -21,34 +22,23 @@ export default function Chapter({
     return <div>Chapter not found</div>;
   }
   return (
-    <div className="flex flex-col gap-4 p-5">
-      <div className=" flex justify-between items-center sticky top-0 bg-[rgb(31,31,31)] p-2 border-b-gray-700 border-b">
-        <h1 className="text-3xl font-bold">
-          N{chapter.chapterNumber + " " + chapter.name}
-        </h1>
-        <div className="flex gap-4 items-center">
-          {/* <div className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300">
-            Score: {score}
-          </div> */}
-          <Link
-            href="/"
-            className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
-          >
-            Home
-          </Link>
-          <button
-            onClick={() => {
-              setQuestions((prevQ) => [...shuffle(prevQ)]);
-            }}
-            className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
-          >
-            Shuffle
-          </button>
-        </div>
-      </div>
+    <div className="flex flex-col gap-4">
+      <h1 className="text-2xl font-semibold">
+        N{chapter.chapterNumber + " " + chapter.name}
+      </h1>
+
       <div className="flex items-center gap-3">
         {/* here i want to add buttons to filter for hard, easy and medium */}
-        <button
+
+        <Button
+          onClick={() => {
+            setQuestions((prevQ) => [...shuffle(prevQ)]);
+          }}
+        >
+          Shuffle
+        </Button>
+
+        <Button
           onClick={() =>
             setQuestions(() =>
               chapter.questions.sort(
@@ -56,78 +46,74 @@ export default function Chapter({
               )
             )
           }
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           Show All
-        </button>
-        <button
+        </Button>
+
+        <Button
           onClick={() => {
             setQuestions(() => [
               ...chapter.questions.filter((q) => q.difficulty === "Easy"),
             ]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           Easy
-        </button>
-        <button
+        </Button>
+
+        <Button
           onClick={() => {
             setQuestions(() => [
               ...chapter.questions.filter((q) => q.difficulty === "Moder"),
             ]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           Medium
-        </button>
-        <button
+        </Button>
+
+        <Button
           onClick={() => {
             setQuestions(() => [
               ...chapter.questions.filter((q) => q.difficulty === "Hard"),
             ]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           Hard
-        </button>
-        <button
+        </Button>
+
+        <Button
           onClick={() => {
             setQuestions(() => [...shuffle(chapter.questions).slice(0, 10)]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           10 Random
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             setQuestions(() => [
               ...chapter.questions.filter((q) => q.type === "true-false"),
             ]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           True-False
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             setQuestions(() => [
               ...chapter.questions.filter((q) => q.type === "writing"),
             ]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           Writing
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={() => {
             setQuestions(() => [
               ...chapter.questions.filter((q) => q.type === "multiple-choice"),
             ]);
           }}
-          className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
           Multiple Choice
-        </button>
+        </Button>
       </div>
       {/* questions */}
       <div className="flex flex-col gap-4 max-w-[75ch]">

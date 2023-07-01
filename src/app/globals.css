@@ -4,8 +4,7 @@
 @tailwind utilities;
 
 body{
-  background-color: rgb(31, 31, 31);
-  color: white;
+  background-color: black;
   font-family: 'Raleway', sans-serif;
 }
 
