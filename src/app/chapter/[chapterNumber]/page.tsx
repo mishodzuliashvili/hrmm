@@ -126,7 +126,7 @@ export default function Chapter({
           }}
           className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
         >
-          Writing
+          Multiple Choice
         </button>
       </div>
       {/* questions */}
