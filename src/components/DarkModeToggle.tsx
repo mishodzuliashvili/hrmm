@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Button from "./Button";
-import { useLocalStorage } from "usehooks-ts";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 export const DarkModeToggle = () => {
   const [isDarkTheme, setDarkTheme] = useLocalStorage("darkTheme", true);

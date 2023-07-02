@@ -1,3 +1,4 @@
+"use client";
 import { CHAPTERS } from "@/assets/data";
 import LinkButton from "@/components/LinkButton";
 export default function Home() {
