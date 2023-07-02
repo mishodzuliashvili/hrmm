@@ -11,6 +11,7 @@ type Question = {
   type: "true-false" | "multiple-choice" | "writing";
   difficulty: string;
   explanation?: string;
+  key?: string;
 };
 
 type Chapter = {

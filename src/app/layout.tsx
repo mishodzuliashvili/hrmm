@@ -1,8 +1,6 @@
-import { DarkModeToggle } from "@/components/DarkModeToggle";
 import "./globals.css";
 import { Inter } from "next/font/google";
-import Link from "next/link";
-import LinkButton from "@/components/LinkButton";
+import { Navbar } from "@/components/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,14 +22,11 @@ export default function RootLayout({
         <div className="flex flex-col gap-4">
           <div className="flex flex-col items-start gap-3">
             <h1 className="text-2xl font-semibold">Welcome back!</h1>
-            <p className="text-tsecondary">
+            <p className="text-light-tsecondary dark:text-tsecondary">
               Do every day. Compete and see your exam score!
             </p>
           </div>
-          <nav className="flex items-center gap-3">
-            <LinkButton href="/">Home</LinkButton>
-            <DarkModeToggle />
-          </nav>
+          <Navbar />
         </div>
         <main className="mt-5">{children}</main>
       </body>

@@ -1,65 +1,51 @@
 "use client";
 import { CHAPTERS } from "@/assets/data";
-import { Question } from "@/components/Question";
-import Link from "next/link";
-import { useState } from "react";
-
+import Button from "@/components/Button";
+import Quiz from "@/components/Quiz";
+import shuffle from "@/utils/shuffle";
+import { useEffect, useState } from "react";
+const getRandom30 = (filterFunc?: (q: Question) => any) => {
+  return shuffle(
+    CHAPTERS.map((chapter) =>
+      chapter.questions.filter(filterFunc ?? (() => true)).map((q) => ({
+        ...q,
+        key: chapter.chapterNumber + "-" + q.questionNumber,
+      }))
+    ).flat()
+  ).slice(0, 30);
+};
 export default function Random30() {
-  const [questions, setQuestions] = useState<Question[]>(
-    shuffle(CHAPTERS.map((chapter) => chapter.questions).flat()).slice(0, 30)
-  );
+  const [questions, setQuestions] = useState<Question[]>([]);
+  useEffect(() => {
+    setQuestions(() => getRandom30());
+  }, []);
 
+  const filters = [
+    {
+      name: "Another Random 30",
+      onClick: () => {
+        setQuestions(() => getRandom30());
+      },
+    },
+    {
+      name: "Only Multiple Choice",
+      onClick: () => {
+        setQuestions(() => getRandom30((q) => q.type === "multiple-choice"));
+      },
+    },
+  ];
   return (
-    <div className="flex flex-col gap-4 p-5">
-      <div className=" flex justify-between items-center sticky top-0 bg-[rgb(31,31,31)] p-2 border-b-gray-700 border-b">
-        <h1 className="text-3xl font-bold">Random 30 Questions</h1>
-        <div className="flex gap-4 items-center">
-          <Link
-            href="/"
-            className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
-          >
-            Home
-          </Link>
-          <button
-            onClick={() => {
-              setQuestions(() => [
-                ...shuffle(
-                  CHAPTERS.map((chapter) => chapter.questions).flat()
-                ).slice(0, 30),
-              ]);
-            }}
-            className="border bg-transparent font-semibold border-gray-700 p-4 rounded-lg hover:border-gray-500 duration-300"
-          >
-            Other Random 30
-          </button>
-        </div>
+    <div className="flex flex-col gap-4">
+      <h1 className="text-2xl font-semibold">Random 30 Questions</h1>
+      <div className="flex items-center gap-3 flex-wrap">
+        {filters.map((filter) => (
+          <Button key={filter.name} onClick={filter.onClick}>
+            {filter.name}
+          </Button>
+        ))}
       </div>
       {/* questions */}
-      <div className="flex flex-col gap-4 max-w-[75ch]">
-        {questions.map((question) => {
-          return <Question question={question} key={question.questionNumber} />;
-        })}
-      </div>
+      <Quiz questions={questions} />
     </div>
   );
-}
-
-function shuffle(array: any) {
-  let currentIndex = array.length,
-    randomIndex;
-
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return [...array];
 }

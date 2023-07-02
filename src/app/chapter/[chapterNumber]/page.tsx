@@ -1,8 +1,8 @@
 "use client";
 import { CHAPTERS } from "@/assets/data";
 import Button from "@/components/Button";
-import { Question } from "@/components/Question";
-import Link from "next/link";
+import Quiz from "@/components/Quiz";
+import shuffle from "@/utils/shuffle";
 import { useState } from "react";
 
 export default function Chapter({
@@ -16,131 +16,101 @@ export default function Chapter({
   const [questions, setQuestions] = useState<Question[]>(
     chapter ? chapter.questions : []
   );
-  const [score, setScore] = useState<number>(0);
-
   if (!chapter) {
     return <div>Chapter not found</div>;
   }
+  const filters = [
+    {
+      name: "Show All",
+      onClick: () => {
+        setQuestions(() => chapter.questions);
+      },
+    },
+    {
+      name: "Shuffle",
+      onClick: () => {
+        setQuestions((prevQ) => shuffle(prevQ));
+      },
+    },
+    {
+      name: "Easy",
+      onClick: () => {
+        setQuestions(() =>
+          chapter.questions.filter((q) => q.difficulty === "Easy")
+        );
+      },
+    },
+    {
+      name: "Medium",
+      onClick: () => {
+        setQuestions(() =>
+          chapter.questions.filter((q) => q.difficulty === "Moderate")
+        );
+      },
+    },
+    {
+      name: "Hard",
+      onClick: () => {
+        setQuestions(() =>
+          chapter.questions.filter((q) => q.difficulty === "Hard")
+        );
+      },
+    },
+    {
+      name: "Random 10",
+      onClick: () => {
+        setQuestions(() => shuffle(chapter.questions).slice(0, 10));
+      },
+    },
+    {
+      name: "True/False",
+      onClick: () => {
+        setQuestions(() =>
+          chapter.questions.filter((q) => q.type === "true-false")
+        );
+      },
+    },
+    {
+      name: "Multiple Choice",
+      onClick: () => {
+        setQuestions(() =>
+          chapter.questions.filter((q) => q.type === "multiple-choice")
+        );
+      },
+    },
+    {
+      name: "Writing",
+      onClick: () => {
+        setQuestions(() =>
+          chapter.questions.filter((q) => q.type === "writing")
+        );
+      },
+    },
+    {
+      name: "Random 10 + Multiple Choice",
+      onClick: () => {
+        setQuestions(() =>
+          shuffle(
+            chapter.questions.filter((q) => q.type === "multiple-choice")
+          ).slice(0, 10)
+        );
+      },
+    },
+  ];
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-semibold">
         N{chapter.chapterNumber + " " + chapter.name}
       </h1>
 
-      <div className="flex items-center gap-3">
-        {/* here i want to add buttons to filter for hard, easy and medium */}
-
-        <Button
-          onClick={() => {
-            setQuestions((prevQ) => [...shuffle(prevQ)]);
-          }}
-        >
-          Shuffle
-        </Button>
-
-        <Button
-          onClick={() =>
-            setQuestions(() =>
-              chapter.questions.sort(
-                (a, b) => a.questionNumber - b.questionNumber
-              )
-            )
-          }
-        >
-          Show All
-        </Button>
-
-        <Button
-          onClick={() => {
-            setQuestions(() => [
-              ...chapter.questions.filter((q) => q.difficulty === "Easy"),
-            ]);
-          }}
-        >
-          Easy
-        </Button>
-
-        <Button
-          onClick={() => {
-            setQuestions(() => [
-              ...chapter.questions.filter((q) => q.difficulty === "Moder"),
-            ]);
-          }}
-        >
-          Medium
-        </Button>
-
-        <Button
-          onClick={() => {
-            setQuestions(() => [
-              ...chapter.questions.filter((q) => q.difficulty === "Hard"),
-            ]);
-          }}
-        >
-          Hard
-        </Button>
-
-        <Button
-          onClick={() => {
-            setQuestions(() => [...shuffle(chapter.questions).slice(0, 10)]);
-          }}
-        >
-          10 Random
-        </Button>
-        <Button
-          onClick={() => {
-            setQuestions(() => [
-              ...chapter.questions.filter((q) => q.type === "true-false"),
-            ]);
-          }}
-        >
-          True-False
-        </Button>
-        <Button
-          onClick={() => {
-            setQuestions(() => [
-              ...chapter.questions.filter((q) => q.type === "writing"),
-            ]);
-          }}
-        >
-          Writing
-        </Button>
-        <Button
-          onClick={() => {
-            setQuestions(() => [
-              ...chapter.questions.filter((q) => q.type === "multiple-choice"),
-            ]);
-          }}
-        >
-          Multiple Choice
-        </Button>
+      <div className="flex items-center gap-3 flex-wrap">
+        {filters.map((filter) => (
+          <Button key={filter.name} onClick={filter.onClick}>
+            {filter.name}
+          </Button>
+        ))}
       </div>
-      {/* questions */}
-      <div className="flex flex-col gap-4 max-w-[75ch]">
-        {questions.map((question) => {
-          return <Question question={question} key={question.questionNumber} />;
-        })}
-      </div>
+      <Quiz questions={questions} />
     </div>
   );
-}
-
-function shuffle(array: any) {
-  let currentIndex = array.length,
-    randomIndex;
-
-  // While there remain elements to shuffle.
-  while (currentIndex != 0) {
-    // Pick a remaining element.
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-
-    // And swap it with the current element.
-    [array[currentIndex], array[randomIndex]] = [
-      array[randomIndex],
-      array[currentIndex],
-    ];
-  }
-
-  return [...array];
 }

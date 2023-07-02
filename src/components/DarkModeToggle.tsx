@@ -1,28 +1,19 @@
 "use client";
 import { useEffect, useState } from "react";
 import Button from "./Button";
+import { useLocalStorage } from "usehooks-ts";
 
 export const DarkModeToggle = () => {
-  const [theme, setTheme] = useState<"light" | "dark">(
-    (localStorage.getItem("theme") as any) || "light"
-  );
+  const [isDarkTheme, setDarkTheme] = useLocalStorage("darkTheme", true);
   useEffect(() => {
-    if (theme === "dark") {
+    if (isDarkTheme) {
       document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
     } else {
       document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
     }
-  }, [theme]);
+  }, [isDarkTheme]);
   const handleThemeChange = () => {
-    if (theme === "dark") {
-      setTheme("light");
-      localStorage.setItem("theme", "light");
-    } else {
-      setTheme("dark");
-      localStorage.setItem("theme", "dark");
-    }
+    setDarkTheme((prevValue: boolean) => !prevValue);
   };
   return <Button onClick={handleThemeChange}>Dark Mode</Button>;
 };
