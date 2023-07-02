@@ -1,21 +1,9 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Question } from "./Question";
 import Button from "./Button";
 import useLocalStorage from "@/hooks/useLocalStorage";
-
-type WordType = {
-  word: string;
-  meanings: {
-    partOfSpeech: string;
-    definitions: {
-      definition: string;
-      example: string;
-      synonyms: string[];
-      antonyms: string[];
-    }[];
-  }[];
-}[];
+import Timer from "./Timer";
 
 const Quiz = ({ questions }: { questions: Question[] }) => {
   const [rightScore, setRightScore] = useState(0);
@@ -33,7 +21,6 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   };
   const handleSelection = () => {
     const selectedText = window.getSelection()?.toString();
-    // console.log(selectedText);
     if (selectedText?.length) {
       fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${selectedText}`)
         .then((res) => res.json())
@@ -76,8 +63,6 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
         })}
       </div>
       <div className="sticky top-0 self-start flex flex-col gap-3 p-5">
-        {/* here i want to add score, timer and buttons for scrool and translator */}
-
         <div className="flex gap-3 flex-wrap">
           <Button disabled={true} onClick={() => {}}>
             All {questions.length} Questions
@@ -88,12 +73,12 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
           <Button disabled={true} onClick={() => {}}>
             Wrong: {wrongScore}
           </Button>
-          {/* button to on scrool behaviour */}
           <Button onClick={() => setScrollOn((prev: any) => !prev)}>
             {scrollOn ? "Scroll On" : "Scroll Off"}
           </Button>
           <Button onClick={() => window.scrollTo(0, 0)}>Scroll Top</Button>
         </div>
+        <Timer duration={10000} />
         <div className="flex gap-3">
           <input
             value={searchText}

@@ -19,3 +19,16 @@ type Chapter = {
   name: string;
   questions: Question[];
 };
+
+type WordType = {
+  word: string;
+  meanings: {
+    partOfSpeech: string;
+    definitions: {
+      definition: string;
+      example: string;
+      synonyms: string[];
+      antonyms: string[];
+    }[];
+  }[];
+}[];
