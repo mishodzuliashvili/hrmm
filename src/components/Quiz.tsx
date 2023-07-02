@@ -78,7 +78,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
           </Button>
           <Button onClick={() => window.scrollTo(0, 0)}>Scroll Top</Button>
         </div>
-        <Timer duration={10000} />
+        <Timer />
         <div className="flex gap-3">
           <input
             value={searchText}
