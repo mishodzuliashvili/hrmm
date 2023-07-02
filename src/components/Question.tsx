@@ -6,12 +6,14 @@ import { WritingQuestion } from "./WritingQuestion";
 
 export const Question = ({
   question,
-  setScore,
   scrollOn,
+  setRightScore,
+  setWrongScore,
 }: {
   question: Question;
-  setScore: any;
   scrollOn: boolean;
+  setRightScore: any;
+  setWrongScore: any;
 }) => {
   const questionRef = useRef<HTMLDivElement>(null);
   const handleScroll = () => {
@@ -21,7 +23,7 @@ export const Question = ({
   };
   const handleClick = (answer: string) => {
     if (answer === question.answer) {
-      setScore((prev: number) => prev + 1);
+      setRightScore((prev: number) => prev + 1);
       if (scrollOn) {
         requestAnimationFrame(() => {
           questionRef.current?.nextElementSibling?.scrollIntoView({
@@ -29,6 +31,8 @@ export const Question = ({
           });
         });
       }
+    } else {
+      setWrongScore((prev: number) => prev + 1);
     }
   };
   return (
