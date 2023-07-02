@@ -11,6 +11,8 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   const [scrollOn, setScrollOn] = useLocalStorage("scroll", false); //
   const [currentWords, setCurrentWords] = useState<WordType>([]); // [currentWord, setCurrentWord] = useState(""
   const [searchText, setSearchText] = useState<string>("");
+  const [timerOn, setTimerOn] = useLocalStorage("timer", false);
+  const [animeGirl, setAnimeGirl] = useLocalStorage("animegirl", false);
   const handleSearch = () => {
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchText}`)
       .then((res) => res.json())
@@ -77,8 +79,14 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
             {scrollOn ? "Scroll On" : "Scroll Off"}
           </Button>
           <Button onClick={() => window.scrollTo(0, 0)}>Scroll Top</Button>
+          <Button onClick={() => setTimerOn((p: any) => !p)}>Timer On</Button>
+          {timerOn && (
+            <Button onClick={() => setAnimeGirl((p: any) => !p)}>
+              Anime Girl
+            </Button>
+          )}
         </div>
-        <Timer />
+        {timerOn ? <Timer animeGirl={animeGirl} /> : null}
         <div className="flex gap-3">
           <input
             value={searchText}

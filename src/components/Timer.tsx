@@ -6,7 +6,7 @@ type TimerProps = {
   duration: number;
 };
 
-const Timer = () => {
+const Timer = ({ animeGirl }: { animeGirl: any }) => {
   const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
@@ -56,13 +56,15 @@ const Timer = () => {
           30 Minute
         </Button>
       </div>
-      <Image
-        className="absolute right-0 bottom-0 pointer-events-none"
-        src="/girl.gif"
-        alt=""
-        width={300}
-        height={300}
-      />
+      {animeGirl && (
+        <Image
+          className="absolute right-0 bottom-0 pointer-events-none"
+          src="/girl.gif"
+          alt=""
+          width={300}
+          height={300}
+        />
+      )}
     </div>
   );
 };
