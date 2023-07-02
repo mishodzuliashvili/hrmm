@@ -43,7 +43,11 @@ export const Question = ({
       <p className="text-gray-500">{question.difficulty}</p>
       <div>
         {question.type === "true-false" && (
-          <TrueFalseQuestion question={question} />
+          <TrueFalseQuestion
+            handleScroll={handleScroll}
+            handleClick={handleClick}
+            question={question}
+          />
         )}
         {question.type === "multiple-choice" && (
           <MultipleChoiseQuestion

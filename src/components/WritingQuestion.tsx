@@ -14,7 +14,7 @@ export const WritingQuestion = ({ question }: { question: Question }) => {
         {/* show answer */}
         {selectedOption !== undefined && (
           <div className="flex flex-col gap-3 items-start py-2">
-            <div className="border border-light-secondary dark:order-secondary p-3">
+            <div className="border border-light-secondary rounded-lg dark:border-secondary p-3">
               <span>Answer: </span>
               <span>{question.answer}</span>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 import { CHAPTERS } from "@/assets/data";
 import LinkButton from "@/components/LinkButton";
+import useLocalStorage from "@/hooks/useLocalStorage";
 export default function Home() {
   return (
     <main className="flex flex-col gap-4">

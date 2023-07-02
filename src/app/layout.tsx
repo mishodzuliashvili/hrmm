@@ -1,6 +1,9 @@
+"use client";
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
+import { MyGlobalContext } from "@/contexts/MyGlobalContext";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,21 +17,24 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [godMode, setGodMode] = useLocalStorage("godMode", false);
   return (
     <html lang="en">
       <body
         className={`${inter.className} bg-white text-black dark:bg-back dark:text-white p-5`}
       >
-        <div className="flex flex-col gap-4">
-          <div className="flex flex-col items-start gap-3">
-            <h1 className="text-2xl font-semibold">Welcome back!</h1>
-            <p className="text-light-tsecondary dark:text-tsecondary">
-              Do every day. Compete and see your exam score!
-            </p>
+        <MyGlobalContext.Provider value={{ godMode, setGodMode }}>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col items-start gap-3">
+              <h1 className="text-2xl font-semibold">Welcome back!</h1>
+              <p className="text-light-tsecondary dark:text-tsecondary">
+                Do every day. Compete and see your exam score!
+              </p>
+            </div>
+            <Navbar />
           </div>
-          <Navbar />
-        </div>
-        <main className="mt-5">{children}</main>
+          <main className="mt-5">{children}</main>
+        </MyGlobalContext.Provider>
       </body>
     </html>
   );

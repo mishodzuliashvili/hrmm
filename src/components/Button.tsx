@@ -14,7 +14,7 @@ const Button = ({
       type="button"
       disabled={disabled}
       className={
-        "border text-left border-light-secondary dark:border-secondary p-3 bg-transparent font-medium outline-none hover:bg-light-secondary dark:hover:bg-secondary duration-300 " +
+        "border text-left border-light-secondary rounded-lg dark:border-secondary p-3 bg-transparent font-medium outline-none hover:bg-light-secondary dark:hover:bg-secondary duration-300 " +
         (px ? "px-5" : "")
       }
       onClick={onClick}

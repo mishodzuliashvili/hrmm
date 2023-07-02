@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import Quiz from "@/components/Quiz";
 import shuffle from "@/utils/shuffle";
 import { useState } from "react";
+import { useLocalStorage } from "usehooks-ts";
 
 export default function Chapter({
   params: { chapterNumber },
