@@ -88,7 +88,9 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
           />
           <Button onClick={() => handleSearch()}>Search</Button>
         </div>
-        <div>{contentWords}</div>
+        <div className="border text-left border-light-secondary dark:border-secondary p-3">
+          {contentWords}
+        </div>
       </div>
     </div>
   );

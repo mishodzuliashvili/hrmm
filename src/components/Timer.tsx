@@ -35,7 +35,7 @@ const Timer = () => {
   };
 
   return (
-    <div className="border border-light-secondary p-3 flex flex-col gap-2 relative">
+    <div className="border border-light-secondary dark:border-secondary p-3 flex flex-col gap-2 relative">
       <h2 className="text-xl font-semibold">Timer</h2>
       <div className="text-xl">{formatTime(remainingTime)}</div>
       <div className="flex gap-3 flex-wrap">
