@@ -1,6 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import { Navbar } from "@/components/Navbar";
+import { Analytics } from "@vercel/analytics/react";
 import {
   MyGlobalContext,
   MyGlobalContextProvider,
@@ -36,6 +37,7 @@ export default function RootLayout({
           </div>
           <main className="mt-5">{children}</main>
         </MyGlobalContextProvider>
+        <Analytics />
       </body>
     </html>
   );
