@@ -44,6 +44,7 @@ const Quiz = ({
   useEffect(() => {
     setRightScore(0);
     setWrongScore(0);
+    setWrongQuestions([]);
   }, [questions]);
 
   const { godMode } = useGlobalContext();

@@ -9,33 +9,42 @@ const getRandom30 = (filterFunc?: (q: Question) => any) => {
     CHAPTERS.map((chapter) =>
       chapter.questions.filter(filterFunc ?? (() => true)).map((q) => ({
         ...q,
-        key:
-          chapter.chapterNumber +
-          "-" +
-          q.questionNumber +
-          "-" +
-          new Date().toISOString(),
+        chapterNumber: chapter.chapterNumber,
       }))
     ).flat()
   ).slice(0, 30);
 };
 export default function Random30() {
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  const setNewQuestions = (newQuestions: Question[]) => {
+    setQuestions(
+      newQuestions.map((q) => ({
+        ...q,
+        key:
+          q.chapterNumber +
+          "-" +
+          q.questionNumber +
+          "-" +
+          new Date().toISOString(),
+      }))
+    );
+  };
   useEffect(() => {
-    setQuestions(() => getRandom30());
+    setNewQuestions(getRandom30());
   }, []);
 
   const filters = [
     {
       name: "Another Random 30",
       onClick: () => {
-        setQuestions(() => getRandom30());
+        setNewQuestions(getRandom30());
       },
     },
     {
       name: "Only Multiple Choice",
       onClick: () => {
-        setQuestions(() => getRandom30((q) => q.type === "multiple-choice"));
+        setNewQuestions(getRandom30((q) => q.type === "multiple-choice"));
       },
     },
   ];
@@ -50,7 +59,7 @@ export default function Random30() {
         ))}
       </div>
       {/* questions */}
-      <Quiz questions={questions} />
+      <Quiz setNewQuestions={setNewQuestions} questions={questions} />
     </div>
   );
 }
