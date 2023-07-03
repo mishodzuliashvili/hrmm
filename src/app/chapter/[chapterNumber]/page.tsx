@@ -3,8 +3,7 @@ import { CHAPTERS } from "@/assets/data";
 import Button from "@/components/Button";
 import Quiz from "@/components/Quiz";
 import shuffle from "@/utils/shuffle";
-import { useState } from "react";
-import { useLocalStorage } from "usehooks-ts";
+import { useEffect, useState } from "react";
 
 export default function Chapter({
   params: { chapterNumber },
@@ -14,29 +13,44 @@ export default function Chapter({
   const chapter: Chapter | undefined = CHAPTERS.find(
     (chapter) => chapter.chapterNumber === parseInt(chapterNumber)
   );
-  const [questions, setQuestions] = useState<Question[]>(
-    chapter ? chapter.questions : []
-  );
+  const [questions, setQuestions] = useState<Question[]>([]);
+  useEffect(() => {
+    setNewQuestions(chapter?.questions ?? []);
+  }, []);
   if (!chapter) {
     return <div>Chapter not found</div>;
   }
+  const setNewQuestions = (newQuestions: Question[]) => {
+    setQuestions(
+      newQuestions.map((q) => ({
+        ...q,
+        key:
+          chapter.chapterNumber +
+          "-" +
+          q.questionNumber +
+          "-" +
+          new Date().toISOString(),
+      }))
+    );
+  };
+
   const filters = [
     {
       name: "Show All",
       onClick: () => {
-        setQuestions(() => chapter.questions);
+        setNewQuestions(chapter.questions);
       },
     },
     {
       name: "Shuffle",
       onClick: () => {
-        setQuestions((prevQ) => shuffle(prevQ));
+        setNewQuestions(shuffle(questions));
       },
     },
     {
       name: "Easy",
       onClick: () => {
-        setQuestions(() =>
+        setNewQuestions(
           chapter.questions.filter((q) => q.difficulty === "Easy")
         );
       },
@@ -44,7 +58,7 @@ export default function Chapter({
     {
       name: "Medium",
       onClick: () => {
-        setQuestions(() =>
+        setNewQuestions(
           chapter.questions.filter((q) => q.difficulty === "Moderate")
         );
       },
@@ -52,7 +66,7 @@ export default function Chapter({
     {
       name: "Hard",
       onClick: () => {
-        setQuestions(() =>
+        setNewQuestions(
           chapter.questions.filter((q) => q.difficulty === "Hard")
         );
       },
@@ -60,13 +74,13 @@ export default function Chapter({
     {
       name: "Random 10",
       onClick: () => {
-        setQuestions(() => shuffle(chapter.questions).slice(0, 10));
+        setNewQuestions(shuffle(chapter.questions).slice(0, 10));
       },
     },
     {
       name: "True/False",
       onClick: () => {
-        setQuestions(() =>
+        setNewQuestions(
           chapter.questions.filter((q) => q.type === "true-false")
         );
       },
@@ -74,7 +88,7 @@ export default function Chapter({
     {
       name: "Multiple Choice",
       onClick: () => {
-        setQuestions(() =>
+        setNewQuestions(
           chapter.questions.filter((q) => q.type === "multiple-choice")
         );
       },
@@ -82,18 +96,16 @@ export default function Chapter({
     {
       name: "Writing",
       onClick: () => {
-        setQuestions(() =>
-          chapter.questions.filter((q) => q.type === "writing")
-        );
+        setNewQuestions(chapter.questions.filter((q) => q.type === "writing"));
       },
     },
     {
       name: "Random 10 + Multiple Choice",
       onClick: () => {
-        setQuestions(() =>
-          shuffle(
-            chapter.questions.filter((q) => q.type === "multiple-choice")
-          ).slice(0, 10)
+        setNewQuestions(
+          shuffle(chapter.questions.filter((q) => q.type === "multiple-choice"))
+            .slice(0, 10)
+            .map((q) => ({ ...q }))
         );
       },
     },
@@ -111,7 +123,7 @@ export default function Chapter({
           </Button>
         ))}
       </div>
-      <Quiz questions={questions} />
+      <Quiz setNewQuestions={setNewQuestions} questions={questions} />
     </div>
   );
 }

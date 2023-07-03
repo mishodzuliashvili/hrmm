@@ -2,6 +2,7 @@ type Question = {
   question: string;
   questionNumber: number;
   answer: string;
+  key: string;
   options?: {
     A: string;
     B: string;
@@ -11,7 +12,6 @@ type Question = {
   type: "true-false" | "multiple-choice" | "writing";
   difficulty: string;
   explanation?: string;
-  key?: string;
 };
 
 type Chapter = {

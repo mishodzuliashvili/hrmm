@@ -1,12 +1,18 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Question } from "./Question";
 import Button from "./Button";
 import useLocalStorage from "@/hooks/useLocalStorage";
 import Timer from "./Timer";
 import { useGlobalContext } from "@/contexts/MyGlobalContext";
 
-const Quiz = ({ questions }: { questions: Question[] }) => {
+const Quiz = ({
+  questions,
+  setNewQuestions,
+}: {
+  questions: Question[];
+  setNewQuestions: any;
+}) => {
   const [rightScore, setRightScore] = useState(0);
   const [wrongScore, setWrongScore] = useState(0);
   const [scrollOn, setScrollOn] = useLocalStorage("scroll", false); //
@@ -15,6 +21,7 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
   const [timerOn, setTimerOn] = useLocalStorage("timer", false);
   const [animeGirl, setAnimeGirl] = useLocalStorage("animegirl", false);
   const [showMenu, setShowMenu] = useState(false);
+  const [wrongQuestions, setWrongQuestions] = useState<Question[]>([]);
   const handleSearch = () => {
     fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${searchText}`)
       .then((res) => res.json())
@@ -34,18 +41,11 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
         });
     }
   };
-  const contentWords = currentWords.length ? (
-    <div className="flex flex-col gap-1 max-w-[50ch]">
-      <h1 className="text-xl font-semibold">{currentWords[0].word}</h1>
-      <p className="text-light-tsecondary dark:text-tsecondary">
-        {currentWords[0].meanings[0].partOfSpeech}{" "}
-      </p>
-      <p>{currentWords[0].meanings[0].definitions[0].definition}</p>
-      <p className="border-l-4 border-l-secondary dark:border-l-tsecondary pl-3">
-        {currentWords[0].meanings[0].definitions[0].example}
-      </p>
-    </div>
-  ) : null;
+  useEffect(() => {
+    setRightScore(0);
+    setWrongScore(0);
+  }, [questions]);
+
   const { godMode } = useGlobalContext();
 
   return (
@@ -59,11 +59,12 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
         {questions.map((question) => {
           return (
             <Question
+              key={question.key}
               scrollOn={scrollOn}
               setRightScore={setRightScore}
               setWrongScore={setWrongScore}
+              setWrongQuestions={setWrongQuestions}
               question={question}
-              key={question.key ? question.key : question.questionNumber}
             />
           );
         })}
@@ -78,13 +79,27 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
       >
         <div className="flex gap-3 flex-wrap">
           <Button disabled={true} onClick={() => {}}>
-            All {questions.length} Questions
+            All: {questions.length}
+          </Button>
+          <Button disabled={true} onClick={() => {}}>
+            Remaining: {questions.length - rightScore - wrongScore}
           </Button>
           <Button disabled={true} onClick={() => {}}>
             Right: {rightScore}
           </Button>
           <Button disabled={true} onClick={() => {}}>
             Wrong: {wrongScore}
+          </Button>
+          <Button
+            onClick={() => {
+              setNewQuestions(
+                wrongQuestions.sort(
+                  (a, b) => a.questionNumber - b.questionNumber
+                )
+              );
+            }}
+          >
+            Redo Wrongs
           </Button>
           <Button onClick={() => setScrollOn((prev: any) => !prev)}>
             {scrollOn ? "Scroll On" : "Scroll Off"}
@@ -108,7 +123,18 @@ const Quiz = ({ questions }: { questions: Question[] }) => {
           <Button onClick={() => handleSearch()}>Search</Button>
         </div>
         <div className="border text-left border-light-secondary rounded-lg dark:border-secondary p-3">
-          {contentWords}
+          {currentWords.length > 0 && (
+            <div className="flex flex-col gap-1 max-w-[50ch]">
+              <h1 className="text-xl font-semibold">{currentWords[0].word}</h1>
+              <p className="text-light-tsecondary dark:text-tsecondary">
+                {currentWords[0].meanings[0].partOfSpeech}{" "}
+              </p>
+              <p>{currentWords[0].meanings[0].definitions[0].definition}</p>
+              <p className="border-l-4 border-l-secondary dark:border-l-tsecondary pl-3">
+                {currentWords[0].meanings[0].definitions[0].example}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

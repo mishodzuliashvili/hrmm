@@ -9,7 +9,12 @@ const getRandom30 = (filterFunc?: (q: Question) => any) => {
     CHAPTERS.map((chapter) =>
       chapter.questions.filter(filterFunc ?? (() => true)).map((q) => ({
         ...q,
-        key: chapter.chapterNumber + "-" + q.questionNumber,
+        key:
+          chapter.chapterNumber +
+          "-" +
+          q.questionNumber +
+          "-" +
+          new Date().toISOString(),
       }))
     ).flat()
   ).slice(0, 30);

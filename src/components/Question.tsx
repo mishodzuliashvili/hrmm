@@ -9,11 +9,13 @@ export const Question = ({
   scrollOn,
   setRightScore,
   setWrongScore,
+  setWrongQuestions,
 }: {
   question: Question;
   scrollOn: boolean;
   setRightScore: any;
   setWrongScore: any;
+  setWrongQuestions: any;
 }) => {
   const questionRef = useRef<HTMLDivElement>(null);
   const handleScroll = () => {
@@ -33,6 +35,7 @@ export const Question = ({
       }
     } else {
       setWrongScore((prev: number) => prev + 1);
+      setWrongQuestions((prev: Question[]) => [...prev, question]);
     }
   };
   return (
