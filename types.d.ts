@@ -2,7 +2,7 @@ type Question = {
   question: string;
   questionNumber: number;
   answer: string;
-  key: string;
+  key?: string;
   options?: {
     A: string;
     B: string;
